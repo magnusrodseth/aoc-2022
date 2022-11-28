@@ -1,4 +1,4 @@
-# 🎅 Advent of Code 2022 🦀
+# 🎅 🦀 Advent of Code 2022
 
 ## Developer Information
 
@@ -7,6 +7,7 @@ Developed by Magnus Rødseth.
 ## Running the application
 
 ```sh
+# Navigate to the project directory
 cd aoc-2022
 
 # View available command line arguments
