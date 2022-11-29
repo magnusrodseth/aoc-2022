@@ -1,4 +1,4 @@
-use aoc_2022::{solve, Date};
+use aoc_2022::{solve, utils::date::Date};
 use clap::Parser;
 
 /// Advent of Code 2022

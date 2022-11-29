@@ -1,40 +1,12 @@
-use crate::solutions::day_01;
+use crate::{solutions::day01, utils::date::Date};
 
 pub mod solutions;
-
-#[derive(clap::ValueEnum, Clone, Debug)]
-pub enum Date {
-    Day01,
-    Day02,
-    Day03,
-    Day04,
-    Day05,
-    Day06,
-    Day07,
-    Day08,
-    Day09,
-    Day10,
-    Day11,
-    Day12,
-    Day13,
-    Day14,
-    Day15,
-    Day16,
-    Day17,
-    Day18,
-    Day19,
-    Day20,
-    Day21,
-    Day22,
-    Day23,
-    Day24,
-    Day25,
-}
+pub mod utils;
 
 /// Wrapper for solving the problem for a given date
 pub fn solve(date: Date) -> i32 {
     match date {
-        Date::Day01 => day_01::solve(),
+        Date::Day01 => day01::solve(),
         Date::Day02 => todo!(),
         Date::Day03 => todo!(),
         Date::Day04 => todo!(),
