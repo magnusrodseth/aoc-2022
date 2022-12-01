@@ -22,11 +22,7 @@ fn part2(input: &Vec<String>) -> i32 {
     // Sort in descending order
     calorie_sums.sort_by(|a, b| b.cmp(a));
 
-    let top_three = calorie_sums
-        .iter()
-        .take(3)
-        .map(|&x| x)
-        .collect::<Vec<i32>>();
+    let top_three = calorie_sums.iter().take(3).copied().collect::<Vec<i32>>();
 
     top_three.iter().sum()
 }
