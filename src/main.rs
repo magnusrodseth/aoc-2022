@@ -11,7 +11,5 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-
-    let result = solve(args.date);
-    println!("Result: {}", result);
+    solve(args.date);
 }

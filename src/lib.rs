@@ -4,7 +4,7 @@ pub mod solutions;
 pub mod utils;
 
 /// Wrapper for solving the problem for a given date.
-pub fn solve(date: Date) -> i32 {
+pub fn solve(date: Date) {
     match date {
         Date::Day01 => day01::solve(),
         Date::Day02 => todo!(),
