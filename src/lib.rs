@@ -1,4 +1,7 @@
-use crate::{solutions::day01, utils::date::Date};
+use crate::{
+    solutions::{day01, day02},
+    utils::date::Date,
+};
 
 pub mod solutions;
 pub mod utils;
@@ -7,7 +10,7 @@ pub mod utils;
 pub fn solve(date: Date) {
     match date {
         Date::Day01 => day01::solve(),
-        Date::Day02 => todo!(),
+        Date::Day02 => day02::solve(),
         Date::Day03 => todo!(),
         Date::Day04 => todo!(),
         Date::Day05 => todo!(),
