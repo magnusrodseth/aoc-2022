@@ -67,7 +67,6 @@ impl Choice {
     }
 }
 
-#[derive(Debug)]
 struct Round {
     opponent: Choice,
     player: Choice,
@@ -93,6 +92,26 @@ impl Round {
             },
         }
     }
+
+    fn from_input(input: &[String], part: Part) -> Vec<Self> {
+        input
+            .iter()
+            .map(|line| line.split(' ').collect::<Vec<&str>>())
+            .map(|choices| {
+                let opponent_choice = choices[0].parse::<char>().expect("invalid opponent choice");
+                let player_choice = choices[1].parse::<char>().expect("invalid player choice");
+
+                let opponent = Choice::opponent_choice(opponent_choice);
+
+                let player = match part {
+                    Part::Part1 => Choice::part1_player_choice(player_choice),
+                    Part::Part2 => Choice::part2_player_choice(&opponent, player_choice),
+                };
+
+                Round { opponent, player }
+            })
+            .collect::<Vec<Self>>()
+    }
 }
 
 fn total_score(rounds: &[Round]) -> i32 {
@@ -107,33 +126,13 @@ fn total_score(rounds: &[Round]) -> i32 {
         .sum()
 }
 
-fn get_rounds(input: &[String], part: Part) -> Vec<Round> {
-    input
-        .iter()
-        .map(|line| line.split(' ').collect::<Vec<&str>>())
-        .map(|choices| {
-            let opponent_choice = choices[0].parse::<char>().expect("invalid opponent choice");
-            let player_choice = choices[1].parse::<char>().expect("invalid player choice");
-
-            let opponent = Choice::opponent_choice(opponent_choice);
-
-            let player = match part {
-                Part::Part1 => Choice::part1_player_choice(player_choice),
-                Part::Part2 => Choice::part2_player_choice(&opponent, player_choice),
-            };
-
-            Round { opponent, player }
-        })
-        .collect::<Vec<Round>>()
-}
-
 fn part1(input: &[String]) -> i32 {
-    let rounds = get_rounds(input, Part::Part1);
+    let rounds = Round::from_input(input, Part::Part1);
     total_score(&rounds)
 }
 
 fn part2(input: &[String]) -> i32 {
-    let rounds = get_rounds(input, Part::Part2);
+    let rounds = Round::from_input(input, Part::Part2);
     total_score(&rounds)
 }
 
