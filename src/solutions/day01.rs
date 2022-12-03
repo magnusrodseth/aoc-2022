@@ -52,13 +52,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_part1() {
+    fn day01_part1() {
         let input: Vec<String> = read_input(Date::Day01).expect("Failed to read input");
         assert_eq!(part1(&input), 67450);
     }
 
     #[test]
-    fn test_part2() {
+    fn day01_part2() {
         let input: Vec<String> = read_input(Date::Day01).expect("Failed to read input");
         assert_eq!(part2(&input), 199357);
     }

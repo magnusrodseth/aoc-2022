@@ -164,13 +164,13 @@ C Z";
     }
 
     #[test]
-    fn test_part1() {
+    fn day02_part1() {
         let actual = get_input();
         assert_eq!(part1(&actual), 15);
     }
 
     #[test]
-    fn test_part2() {
+    fn day02_part2() {
         let actual = get_input();
         assert_eq!(part2(&actual), 12);
     }
