@@ -15,6 +15,9 @@ cargo run -- --help
 
 # Run the solution for a given date (day01 - day25)
 cargo run <DATE>
+
+# Run tests with sample input for a given date (day01 - day25)
+cargo test <DATE>
 ```
 
 ## Solving tasks
