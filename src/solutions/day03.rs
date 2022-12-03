@@ -30,11 +30,10 @@ fn part1(input: &[String]) -> i32 {
             let second_half = &line[middle..];
 
             let mut common: Option<char> = None;
-            for first_char in first_half.chars() {
-                for second_char in second_half.chars() {
-                    if first_char == second_char {
-                        common = Some(first_char);
-                    }
+            for second_char in second_half.chars() {
+                if first_half.contains(second_char) {
+                    common = Some(second_char);
+                    break;
                 }
             }
 
@@ -53,13 +52,11 @@ fn part2(input: &[String]) -> i32 {
         .map(|(first, second, third)| {
             // Iterate over all possible combinations of the three lines
             let mut common: Option<char> = None;
+
             for first_char in first.chars() {
-                for second_char in second.chars() {
-                    for third_char in third.chars() {
-                        if first_char == second_char && second_char == third_char {
-                            common = Some(first_char);
-                        }
-                    }
+                if second.contains(first_char) && third.contains(first_char) {
+                    common = Some(first_char);
+                    break;
                 }
             }
 
