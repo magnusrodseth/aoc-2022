@@ -5,10 +5,15 @@ enum Part {
     Part2,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 struct Interval {
     min: u32,
     max: u32,
+}
+
+struct Pair {
+    first: Interval,
+    second: Interval,
 }
 
 impl Interval {
@@ -21,14 +26,14 @@ impl Interval {
     }
 }
 
-fn pairs(input: &[String]) -> Vec<Vec<Interval>> {
+fn pairs(input: &[String]) -> Vec<Pair> {
     input
         .iter()
         .map(|line| {
-            let pairs = line
+            let pair = line
                 .split(',')
-                .map(|pair| {
-                    let interval = pair
+                .map(|interval| {
+                    let interval = interval
                         .split('-')
                         .map(|s| s.parse::<u32>().expect("Failed to parse number"))
                         .collect::<Vec<_>>();
@@ -40,17 +45,20 @@ fn pairs(input: &[String]) -> Vec<Vec<Interval>> {
                 })
                 .collect::<Vec<_>>();
 
-            pairs
+            Pair {
+                first: pair[0],
+                second: pair[1],
+            }
         })
         .collect::<Vec<_>>()
 }
 
-fn overlapping(pairs: &[Vec<Interval>], part: Part) -> i32 {
+fn overlapping(pairs: &[Pair], part: Part) -> i32 {
     pairs
         .iter()
         .filter(|pairs| {
-            let first = &pairs[0];
-            let second = &pairs[1];
+            let first = &pairs.first;
+            let second = &pairs.second;
 
             match part {
                 Part::Part1 => first.includes(second) || second.includes(first),
