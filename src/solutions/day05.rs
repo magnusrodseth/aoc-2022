@@ -1,31 +1,6 @@
 use std::array::from_fn;
 
-type Stacks<const STACKS_COUNT: usize> = [Vec<char>; STACKS_COUNT];
-
-struct Crates<const STACKS_COUNT: usize> {
-    stacks: Stacks<STACKS_COUNT>,
-}
-
-impl<const STACKS_COUNT: usize> Crates<STACKS_COUNT> {
-    /// Creates a new set of crates from a string of characters.
-    /// The string is split into `STACKS_COUNT` stacks.
-    fn new(input: &str) -> Self {
-        let mut stacks = from_fn(|_| Vec::new());
-
-        for line in input.lines().rev() {
-            let characters = line.chars().skip(1).step_by(4);
-
-            for (i, character) in characters.enumerate() {
-                if let character @ 'A'..='Z' = character {
-                    stacks[i].push(character)
-                }
-            }
-        }
-
-        Self { stacks }
-    }
-}
-
+#[derive(Clone)]
 struct Instruction {
     quantity: u8,
     from: u8,
@@ -52,22 +27,57 @@ impl Instruction {
     }
 }
 
-/// Parsing input is the biggest hassle in this solution.
-/// First, we must separate the stacks from the instructions.
-fn parse_input<const STACKS_COUNT: usize>(input: &str) -> (Crates<STACKS_COUNT>, Vec<Instruction>) {
-    let (crates_input, instruction_input) = input.split_once("\n\n").expect("Invalid input");
-
-    let mut crates = Crates::new(crates_input);
-    let mut instructions = Instruction::parse_instructions(instruction_input);
-
-    (crates, instructions)
+#[derive(Clone)]
+struct Crates<const STACKS_COUNT: usize> {
+    stacks: [Vec<char>; STACKS_COUNT],
+    instructions: Vec<Instruction>,
 }
 
-fn part1<const STACKS_COUNT: usize>(
-    mut crates: Crates<STACKS_COUNT>,
-    instructions: &Vec<Instruction>,
-) -> String {
-    for instruction in instructions {
+impl<const STACKS_COUNT: usize> Crates<STACKS_COUNT> {
+    /// Creates new crates from a string of characters.
+    /// The string is split into `STACKS_COUNT` stacks.
+    fn new(input: &str, instructions: Vec<Instruction>) -> Self {
+        let mut stacks = from_fn(|_| Vec::new());
+
+        for line in input.lines().rev() {
+            let characters = line.chars().skip(1).step_by(4);
+
+            for (i, character) in characters.enumerate() {
+                if let character @ 'A'..='Z' = character {
+                    stacks[i].push(character)
+                }
+            }
+        }
+
+        Self {
+            stacks,
+            instructions,
+        }
+    }
+
+    fn top_crates(&mut self) -> String {
+        self.stacks
+            .iter_mut()
+            .map(|stack| stack.pop().expect("No crates left"))
+            .collect()
+    }
+}
+
+/// Parsing input is the biggest hassle in this solution.
+/// First, we must separate the stacks from the instructions.
+fn parse_input<const STACKS_COUNT: usize>(input: &str) -> Crates<STACKS_COUNT> {
+    let (crates_input, instruction_input) = input.split_once("\n\n").expect("Invalid input");
+    let instructions = Instruction::parse_instructions(instruction_input);
+
+    Crates::new(crates_input, instructions)
+}
+
+fn part1<const STACKS_COUNT: usize>(crates: &Crates<STACKS_COUNT>) -> String {
+    // We clone the borrowed `crates` to avoid borrowing it mutably.
+    // This way, part1 and part2 can be called on the same crates.
+    let mut crates = crates.clone();
+
+    for instruction in &crates.instructions {
         for _ in 0..instruction.quantity {
             let value = crates.stacks[instruction.from as usize - 1]
                 .pop()
@@ -77,20 +87,15 @@ fn part1<const STACKS_COUNT: usize>(
         }
     }
 
-    let top_crates = crates
-        .stacks
-        .iter_mut()
-        .map(|stack| stack.pop().expect("No crates left"))
-        .collect();
-
-    top_crates
+    crates.top_crates()
 }
 
-fn part2<const STACKS_COUNT: usize>(
-    mut crates: Crates<STACKS_COUNT>,
-    instructions: &Vec<Instruction>,
-) -> String {
-    for instruction in instructions {
+fn part2<const STACKS_COUNT: usize>(crates: &Crates<STACKS_COUNT>) -> String {
+    // We clone the borrowed `crates` to avoid borrowing it mutably.
+    // This way, part1 and part2 can be called on the same crates.
+    let mut crates = crates.clone();
+
+    for instruction in &crates.instructions {
         let (quantity, from, to) = (
             instruction.quantity as usize,
             instruction.from as usize - 1,
@@ -102,19 +107,15 @@ fn part2<const STACKS_COUNT: usize>(
         crates.stacks[to].append(&mut crates_to_move);
     }
 
-    crates
-        .stacks
-        .iter_mut()
-        .map(|stack| stack.pop().unwrap())
-        .collect()
+    crates.top_crates()
 }
 
 pub fn solve() {
     let input = include_str!("../../input/day05.txt");
-    let (crates, instructions) = parse_input::<9>(input);
+    let crates = parse_input::<9>(input);
 
-    println!("Day 1 Part 1: {:?}", part1::<9>(crates, &instructions));
-    // println!("Day 1 Part 2: {:?}", part2::<9>(crates, &instructions));
+    println!("Day 1 Part 1: {:?}", part1::<9>(&crates));
+    println!("Day 1 Part 2: {:?}", part2::<9>(&crates));
 }
 
 #[cfg(test)]
@@ -133,13 +134,13 @@ move 1 from 1 to 2";
 
     #[test]
     fn day05_part1() {
-        let (crates, instructions) = parse_input::<3>(INPUT);
-        assert_eq!(part1(crates, &instructions), "CMZ");
+        let crates = parse_input::<3>(INPUT);
+        assert_eq!(part1(&crates), "CMZ");
     }
 
     #[test]
     fn day05_part2() {
-        let (crates, instructions) = parse_input::<3>(INPUT);
-        assert_eq!(part2(crates, &instructions), "MCD");
+        let crates = parse_input::<3>(INPUT);
+        assert_eq!(part2(&crates), "MCD");
     }
 }
