@@ -8,7 +8,7 @@ struct Instruction {
 }
 
 impl Instruction {
-    fn parse_instructions(input: &str) -> Vec<Self> {
+    fn parse(input: &str) -> Vec<Self> {
         let mut instruction = input
             .split_whitespace()
             .skip(1)
@@ -35,7 +35,7 @@ struct Crates<const STACKS_COUNT: usize> {
 impl<const STACKS_COUNT: usize> Crates<STACKS_COUNT> {
     /// Creates new crates from a string of characters.
     /// The string is split into `STACKS_COUNT` stacks.
-    fn new(input: &str) -> Self {
+    fn parse(input: &str) -> Self {
         let mut stacks = from_fn(|_| Vec::new());
 
         for line in input.lines().rev() {
@@ -77,8 +77,8 @@ struct CrateContainer<const STACKS_COUNT: usize> {
 
 fn parse_input<const STACKS_COUNT: usize>(input: &str) -> CrateContainer<STACKS_COUNT> {
     let (crates_input, instruction_input) = input.split_once("\n\n").expect("Invalid input");
-    let instructions = Instruction::parse_instructions(instruction_input);
-    let crates = Crates::new(crates_input);
+    let instructions = Instruction::parse(instruction_input);
+    let crates = Crates::parse(crates_input);
 
     CrateContainer {
         crates,
