@@ -10,7 +10,7 @@ where
     let path = format!("input/{}.txt", date);
 
     Ok(read_to_string(path)?
-        .split('\n')
+        .lines()
         .filter_map(|line| line.parse::<T>().ok())
         .collect())
 }

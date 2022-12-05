@@ -1,5 +1,5 @@
 use crate::{
-    solutions::{day01, day02, day03, day04},
+    solutions::{day01, day02, day03, day04, day05},
     utils::date::Date,
 };
 
@@ -13,7 +13,7 @@ pub fn solve(date: Date) {
         Date::Day02 => day02::solve(),
         Date::Day03 => day03::solve(),
         Date::Day04 => day04::solve(),
-        Date::Day05 => todo!(),
+        Date::Day05 => day05::solve(),
         Date::Day06 => todo!(),
         Date::Day07 => todo!(),
         Date::Day08 => todo!(),
