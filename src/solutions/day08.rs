@@ -1,5 +1,3 @@
-use std::cmp;
-
 use crate::utils::{date::Date, io::read_input};
 
 struct Visible {
