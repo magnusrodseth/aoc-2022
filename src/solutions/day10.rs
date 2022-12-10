@@ -4,14 +4,14 @@ use anyhow::{anyhow, Result};
 
 use crate::utils::{date::Date, io::read_input};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Clone, Copy)]
 enum CpuState {
     Idle,
     Busy(Instruction, usize),
 }
 
 impl CpuState {
-    /// Returns `true` if the cpustate is [`Idle`].
+    /// Returns `true` if the CPU state is [`Idle`].
     ///
     /// [`Idle`]: CPUState::Idle
     #[must_use]
@@ -20,7 +20,6 @@ impl CpuState {
     }
 }
 
-#[derive(Debug)]
 struct Cpu {
     register_value: i64,
     state: CpuState,
@@ -68,7 +67,7 @@ impl Cpu {
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Copy, Clone)]
 enum Instruction {
     Noop,
     Add(i64),
