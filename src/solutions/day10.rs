@@ -351,7 +351,7 @@ noop";
     }
 
     #[test]
-    fn day09_part1() {
+    fn day10_part1() {
         let actual = get_input();
         assert_eq!(part1(&actual), 13140);
     }
