@@ -9,6 +9,7 @@ enum Operation {
     Multiply(u32),
     Add(u32),
 }
+
 impl FromStr for Operation {
     type Err = ();
 
@@ -107,6 +108,7 @@ fn solve_puzzle<F: FnMut(u64) -> u64>(
     mut calculate_relief: F,
 ) -> u64 {
     let mut counts = vec![0; monkeys.len()];
+
     for _ in 0..number_of_rounds {
         for i in 0..monkeys.len() {
             let monkey = &mut monkeys[i];
